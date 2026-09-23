@@ -4,7 +4,7 @@ desc: 基于 QQ reaction 投票的 AstrBot 群管理插件；达到阈值后自�
 short_desc: Reaction 投票触发的 QQ 群禁言插件。
 author: siddhartha-yz
 version: 0.2.0
-repo: https://github.com/siddhartha-yz/ostrakon
+repo: https://github.com/siddhartha-yz/funuono
 support_platforms:
   - aiocqhttp
 astrbot_version: ">=4.27,<5"
