@@ -57,28 +57,17 @@ OneBot token、反向 WebSocket 地址和 QQ 登录状态属于 **AstrBot / NapC
 
 ## 安装
 
-推荐从 AstrBot WebUI 的插件管理安装本仓库：
+此插件现在由 [弗糯糯单仓库](https://github.com/siddhartha-yz/funuono) 维护。生产 bot 通过主分支 CI 和服务器部署器更新，不使用 AstrBot WebUI 的“更新插件”。
 
-```text
-https://github.com/siddhartha-yz/ostrakon
-```
-
-也可以在 AstrBot 数据目录中手动安装：
+手动安装到其他 AstrBot 实例时，复制此子目录并重载插件：
 
 ```bash
-cd data/plugins
-git clone https://github.com/siddhartha-yz/ostrakon.git ostrakon
+git clone https://github.com/siddhartha-yz/funuono.git /tmp/funuono
+mkdir -p data/plugins
+cp -a /tmp/funuono/plugins/ostrakon data/plugins/
 ```
 
-然后在 AstrBot 中重载插件。
-
-插件运行数据写入 AstrBot 的标准插件数据目录：
-
-```text
-data/plugin_data/ostrakon/ostrakon.sqlite3
-```
-
-源码目录不会保存运行时 SQLite。
+插件运行数据写入 AstrBot 的标准插件数据目录 `data/plugin_data/ostrakon/ostrakon.sqlite3`，源码目录不保存运行时 SQLite。
 
 ## 配置
 

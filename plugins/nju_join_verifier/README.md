@@ -1,5 +1,7 @@
 # astrbot_plugin_nju_join_verifier
 
+维护地址：[弗糯糯单仓库](https://github.com/siddhartha-yz/funuono/tree/main/plugins/nju_join_verifier)。生产 bot 通过主分支 CI 和服务器部署器更新。
+
 AstrBot moderation plugin for conservative QQ group join verification.
 
 The plugin only auto-approves. It never auto-rejects. Every enabled-group join application is parsed by a configured AstrBot LLM provider into exactly two identity fields: the applicant's Chinese name and student ID. Major, department, school and direction are ignored. The extracted pair must still receive an explicit `match` from the external identity-verification service before automatic approval is possible.
