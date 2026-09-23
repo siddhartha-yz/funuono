@@ -1,6 +1,6 @@
 # 自动部署说明
 
-服务器上的 `deploy/deployer.py` 由 ubuntu 用户每分钟运行一次。它从 `siddhartha-yz/funuono` 获取 `main` 的提交，检查该提交的 GitHub Actions `ci.yml` 是否成功，再将两个插件的已提交文件放入 AstrBot 的 `data/plugins/` 并通过只有 `plugin` 权限的 AstrBot API key 热重载。
+服务器上的 `deploy/deployer.py` 由 ubuntu 用户每分钟运行一次。它从 `siddhartha-yz/funuono` 获取 `main` 的提交，确认该提交来自合并到主分支的 PR，并检查 GitHub Actions `ci.yml` 是否成功，再将两个插件的已提交文件放入 AstrBot 的 `data/plugins/` 并通过只有 `plugin` 权限的 AstrBot API key 热重载。
 
 部署器不读取或覆盖 `data/plugin_data/`、AstrBot 配置、NapCat 登录数据。首次迁移时会把旧插件目录移至 `~/.local/share/funuono/backups/`；后续每次部署也保留旧目录以供回退。
 
