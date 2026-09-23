@@ -71,6 +71,17 @@ def ci_succeeded(sha: str) -> bool:
     )
 
 
+def merged_pull_request(sha: str) -> bool:
+    """Only a squash-merged PR targeting main may become a production release."""
+    payload = json.loads(run("gh", "api", f"repos/{REPO}/commits/{sha}/pulls"))
+    return any(
+        item.get("merged_at")
+        and item.get("merge_commit_sha") == sha
+        and item.get("base", {}).get("ref") == "main"
+        for item in payload
+    )
+
+
 def stage_plugins(sha: str, stage: Path) -> None:
     archive = run(
         "git", "--git-dir", str(GIT_DIR), "archive", sha,
@@ -162,6 +173,9 @@ def sync() -> None:
             return
         if not ci_succeeded(sha):
             print(f"{sha[:12]}: waiting for successful CI", flush=True)
+            return
+        if not merged_pull_request(sha):
+            print(f"{sha[:12]}: no merged pull request; deployment skipped", flush=True)
             return
         key = read_plugin_key()
         with tempfile.TemporaryDirectory(prefix="stage-", dir=STATE_DIR) as temp:

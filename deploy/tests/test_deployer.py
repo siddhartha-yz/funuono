@@ -2,7 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from deploy.deployer import PLUGINS, DeploymentError, install_plugins
+from deploy.deployer import (
+    PLUGINS,
+    DeploymentError,
+    install_plugins,
+    merged_pull_request,
+)
 
 
 def make_layout(root: Path) -> tuple[Path, Path, Path]:
@@ -40,3 +45,16 @@ def test_reload_failure_restores_both_plugins(tmp_path: Path) -> None:
     assert all((live / name / "marker").read_text() == "old" for name in PLUGINS)
     assert all((backup / "failed-new" / name / "marker").read_text() == "new" for name in PLUGINS)
     assert calls == [*PLUGINS, *PLUGINS]
+
+
+def test_only_merged_pr_for_exact_main_commit_is_releasable(monkeypatch) -> None:
+    import json
+
+    sha = "a" * 40
+    matching = {"merged_at": "2026-09-23T10:00:00Z", "merge_commit_sha": sha,
+                "base": {"ref": "main"}}
+    monkeypatch.setattr("deploy.deployer.run", lambda *_: json.dumps([matching]).encode())
+    assert merged_pull_request(sha)
+
+    matching["merge_commit_sha"] = "b" * 40
+    assert not merged_pull_request(sha)
