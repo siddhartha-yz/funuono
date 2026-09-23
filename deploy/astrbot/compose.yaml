@@ -1,0 +1,27 @@
+services:
+  astrbot:
+    image: soulter/astrbot@sha256:e51e924d47c5921b9f92afd9c9bb1d459cb5eda33185b494515464f4b051d9bc
+    container_name: astrbot
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    user: "1000:1001"
+    env_file:
+      - .env
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "127.0.0.1:6185:6185"
+    expose:
+      - "6199"
+    volumes:
+      - ./data:/AstrBot/data
+      - ../ostrakon/deploy/astrbot/rate_limit_stage.py:/AstrBot/astrbot/core/pipeline/rate_limit_check/stage.py:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - qqbot
+
+networks:
+  qqbot:
+    external: true
+    name: ostrakon_default

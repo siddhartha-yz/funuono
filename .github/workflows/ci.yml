@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install 'pytest>=8,<9' 'pytest-asyncio>=0.24,<1' 'aiohttp>=3.9,<4' 'ruff==0.16.3'
+      - name: Ostrakon lint and tests
+        working-directory: plugins/ostrakon
+        run: |
+          ruff check main.py ostrakon tests deploy/astrbot/rate_limit_stage.py
+          python -m pytest -q
+      - name: NJU verifier lint and tests
+        working-directory: plugins/nju_join_verifier
+        run: |
+          ruff check main.py nju_join_verifier tests runtime_checks
+          python -m pytest -q
+      - name: Compile plugins and deployer
+        run: python -m compileall -q plugins deploy/deployer.py
+      - name: Deployer lint
+        run: ruff check deploy
+      - name: Deployer tests
+        run: python -m pytest -q deploy/tests
+      - name: AstrBot plugin load smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          volume="funuono-ci-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          container="funuono-ci"
+          cleanup() {
+            docker rm -f "$container" >/dev/null 2>&1 || true
+            docker volume rm -f "$volume" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          docker volume create "$volume" >/dev/null
+          docker run -d --name "$container" --network none \
+            -v "$volume:/AstrBot/data" \
+            -v "$GITHUB_WORKSPACE/plugins/nju_join_verifier:/AstrBot/data/plugins/nju_join_verifier:ro" \
+            -v "$GITHUB_WORKSPACE/plugins/ostrakon:/AstrBot/data/plugins/ostrakon:ro" \
+            soulter/astrbot@sha256:e51e924d47c5921b9f92afd9c9bb1d459cb5eda33185b494515464f4b051d9bc >/dev/null
+          ok=0
+          for _ in $(seq 1 40); do
+            logs="$(docker logs "$container" 2>&1 || true)"
+            if grep -q 'Plugin nju_join_verifier (' <<<"$logs" && \
+               grep -q 'Plugin ostrakon (' <<<"$logs" && \
+               grep -q 'AstrBot started.' <<<"$logs"; then
+              ok=1
+              break
+            fi
+            if grep -Eq 'Failed to import plugin (nju_join_verifier|ostrakon)|Traceback' <<<"$logs"; then
+              break
+            fi
+            sleep 1
+          done
+          if [ "$ok" != 1 ]; then docker logs "$container" 2>&1 || true; fi
+          cleanup
+          trap - EXIT
+          [ "$ok" = 1 ]

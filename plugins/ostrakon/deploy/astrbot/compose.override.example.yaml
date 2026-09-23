@@ -1,0 +1,4 @@
+services:
+  astrbot:
+    volumes:
+      - ${OSTRAKON_REPO:?set OSTRAKON_REPO}/deploy/astrbot/rate_limit_stage.py:/AstrBot/astrbot/core/pipeline/rate_limit_check/stage.py:ro
