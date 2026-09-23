@@ -16,7 +16,7 @@ services:
       - "6199"
     volumes:
       - ./data:/AstrBot/data
-      - ../ostrakon/deploy/astrbot/rate_limit_stage.py:/AstrBot/astrbot/core/pipeline/rate_limit_check/stage.py:ro
+      - ../funuono/plugins/ostrakon/deploy/astrbot/rate_limit_stage.py:/AstrBot/astrbot/core/pipeline/rate_limit_check/stage.py:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
       - qqbot
