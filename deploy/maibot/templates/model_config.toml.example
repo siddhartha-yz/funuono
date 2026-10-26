@@ -114,8 +114,8 @@ hard_timeout = 60.0 # 任务硬超时（秒），到点未返回则取消请求�
 
 [[api_providers]]
 name = "DeepSeek" # API服务商名称 (可随意命名, 在models的api-provider中需使用这个命名)
-base_url = "https://api.deepseek.com" 
-api_key = "${DEEPSEEK_API_KEY}" 
+base_url = "https://api.deepseek.com"
+api_key = "${DEEPSEEK_API_KEY}"
 client_type = "openai" # 客户端类型。内置支持 openai、openai_responses 和 gemini，也可由插件扩展。
 auth_type = "bearer" # OpenAI 兼容接口的鉴权方式。可选值：`bearer`、`header`、`query`、`none`。
 auth_header_name = "Authorization" # 当 `auth_type` 为 `header` 时使用的请求头名称。
