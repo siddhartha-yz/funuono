@@ -1,6 +1,6 @@
 # 弗糯糯
 
-QQ 群机器人维护仓库。NapCat 保持 QQ 登录，AstrBot 负责连接和插件生命周期；本仓库管理两个自研插件与部署流程。
+QQ 群机器人维护仓库。NapCat 保持 QQ 登录，AstrBot 负责群管理插件，MaiBot 负责指定群的 AI 聊天；本仓库管理插件与部署流程。
 
 | 目录 | 功能 |
 | --- | --- |
@@ -8,6 +8,7 @@ QQ 群机器人维护仓库。NapCat 保持 QQ 登录，AstrBot 负责连接和�
 | `plugins/ostrakon` | reaction 投票触发群禁言 |
 | `deploy/deployer.py` | 检查主分支 CI，更新插件并调用 AstrBot 热重载 |
 | `deploy/astrbot` | 当前 AstrBot 部署文件与限流补丁的参考副本 |
+| `deploy/maibot` | MaiBot 聊天、图片理解、联网搜索与记忆的脱敏配置、固定版本及恢复脚本 |
 
 ## 修改和上线
 
@@ -24,6 +25,8 @@ QQ 群机器人维护仓库。NapCat 保持 QQ 登录，AstrBot 负责连接和�
 
 `plugins/` 中的 Python 插件代码支持热更新。AstrBot 镜像、NapCat、Docker Compose、依赖安装和 `deploy/astrbot/rate_limit_stage.py` 的变更不自动上线；这些改动需要单独安排维护，部分改动可能需要重启 AstrBot。当前运行的限流补丁对应 AstrBot 4.27.3。
 
+MaiBot 的恢复与后台访问见 [`deploy/maibot/README.md`](deploy/maibot/README.md)。该目录保存脱敏配置快照，不参与 AstrBot 插件热更新；后台后续修改也不会自动上传到 GitHub。
+
 ## 本地检查
 
 ```bash
@@ -33,4 +36,3 @@ cd ../nju_join_verifier && ruff check main.py nju_join_verifier tests runtime_ch
 ```
 
 部署细节见 [`deploy/README.md`](deploy/README.md)。
-

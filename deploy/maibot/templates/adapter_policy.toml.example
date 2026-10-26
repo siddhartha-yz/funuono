@@ -1,0 +1,6 @@
+[defaults.group]
+default_action = "block"
+allow_ids = ["${GROUP_ID}"]
+[defaults.private]
+default_action = "block"
+allow_ids = []

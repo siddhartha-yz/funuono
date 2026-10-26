@@ -1,0 +1,30 @@
+services:
+  maibot:
+    build: .
+    image: local/maibot-qq:1.3.15
+    container_name: maibot-qq
+    restart: unless-stopped
+    stop_grace_period: 70s
+    environment:
+      TZ: Asia/Shanghai
+      EULA_AGREE: 8e6e7d647f7f82d6ea98456b73908656
+      PRIVACY_AGREE: 91e5db7659c560bc3545e63859b6ebc0
+      MAIBOT_LEGACY_0X_UPGRADE_CONFIRMED: "1"
+    ports:
+      - "127.0.0.1:18001:8001"
+    volumes:
+      - ./config:/MaiMBot/config
+      - ./data:/MaiMBot/data
+      - ./plugins:/MaiMBot/plugins
+      - ./logs:/MaiMBot/logs
+    networks:
+      - qq
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+networks:
+  qq:
+    external: true
+    name: ostrakon_default

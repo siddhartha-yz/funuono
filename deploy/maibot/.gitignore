@@ -1,0 +1,8 @@
+/config/
+/data/
+/logs/
+/plugins/
+/backups/
+/runtime/
+*.log
+webui.json

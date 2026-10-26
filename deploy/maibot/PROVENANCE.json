@@ -1,0 +1,11 @@
+{
+  "snapshot_date": "2026-10-26",
+  "maibot_version": "1.3.15",
+  "maibot_repository": "https://github.com/Mai-with-u/MaiBot",
+  "maibot_commit": "062d45cf8bd4272ac57d7ec03fcf405e5a458211",
+  "base_image": "sengokucola/maibot@sha256:02d2d9bdd7b3f22f73c63d0ca7a415a9f4c9d16b3f269ca63d62cedfa01edfda",
+  "adapter_version": "1.1.9",
+  "adapter_repository": "https://github.com/Mai-with-u/MaiBot-SnowLuma-Adapter.git",
+  "adapter_commit": "ab751ae5c11f501e0158e33cacc321b33e34ef0c",
+  "extra_dependency": "silk-python==0.2.8"
+}

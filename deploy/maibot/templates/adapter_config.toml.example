@@ -1,0 +1,21 @@
+[plugin]
+enabled = true
+config_version = "2.7.1"
+qq_face_parse_mode = "description"
+[client]
+client_type = "napcat"
+server = "napcat"
+port = 3001
+token = "${NAPCAT_TOKEN}"
+connection_id = "dafeiyu-${GROUP_ID}"
+[chat_abilities]
+enable_private_chat_tool = false
+enable_poke_tool = false
+enable_recall_tool = false
+enable_mute_tool = false
+enable_emoji_like_tool = false
+enable_forward_tool = false
+[debug]
+enable_ada_debug_raw_message_log = false
+enable_ada_debug_raw_outbound_message_log = false
+ignore_self_message = true
