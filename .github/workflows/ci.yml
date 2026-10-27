@@ -35,6 +35,10 @@ jobs:
         run: ruff check deploy
       - name: Deployer tests
         run: python -m pytest -q deploy/tests
+      - name: MaiBot deployment checks
+        run: |
+          python -m pytest -q deploy/maibot/tests
+          docker compose -f deploy/maibot/compose.yaml config --quiet
       - name: AstrBot plugin load smoke
         shell: bash
         run: |
